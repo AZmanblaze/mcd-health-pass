@@ -4,20 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>麦门健康通行证 · McD Health Pass</title>
-<!--
-  McD Health Pass · 分享卡片模板 v2（票据收据风，direction-approved.md 方向A深化）
-  替换字段（其余结构勿动）：
-  1. .chips            — 健康标签：只写「状况·严重度」，禁止出现体检数值（隐私红线）
-  2. .combo-name/items — 本次推荐组合名与单品
-  3. .order .v         — 合计价格
-  4. .q-row ×N         — 限额核对行：名称/日限额、q-fill width=百分比、q-pct 文本、
-                         q-mark 符号按三色分级：🟢≤33% 用 ☑（fill #97c459），
-                         🟡34-66% 用 !（fill #ef9f27），🔴>66% 用 ✕（fill #e24b4a）
-  5. .avoid p          — 本次避开的红区单品 + 替换说明（免责句在 .disclaim，不可删）
-  6. .serial           — 编号规则 MP-YYYYMMDD-序号 + 签发日期
-  7. .slogan           — 可换克制的麦门梗句式
-  视觉母题：麦当劳点餐小票 → 健康放行单。无外部资源，双击即开，截图即分享。
--->
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -36,6 +22,7 @@
     background: #fffdf8;
     box-shadow: 0 12px 32px rgba(60, 30, 20, .22);
     position: relative;
+    /* 票据纸质感：极淡的横向纹理 */
     background-image: repeating-linear-gradient(
       to bottom,
       rgba(0,0,0,.012) 0 2px,
@@ -45,7 +32,7 @@
 
   /* ============ 票据头 ============ */
   .r-head {
-    background: #da3743;
+    background: #b82833;
     padding: 22px 22px 18px;
     position: relative;
     color: #fff;
@@ -67,11 +54,7 @@
     font-size: 12px; letter-spacing: 2px;
     color: rgba(255,255,255,.85);
   }
-  .r-head .store .zh {
-    font-family: "Courier New", ui-monospace, monospace;
-    font-size: 12px; margin-top: 3px;
-    color: rgba(255,255,255,.65); letter-spacing: 1px;
-  }
+  .r-head .store .zh { font-size: 14px; font-weight: 600; margin-top: 2px; }
   .r-head h1 {
     margin-top: 16px;
     font-size: 24px; letter-spacing: 4px; font-weight: 700;
@@ -120,7 +103,7 @@
     padding: 12px 14px;
   }
   .order .combo-name {
-    font-size: 15px; font-weight: 700; color: #da3743;
+    font-size: 15px; font-weight: 700; color: #b82833;
   }
   .order .combo-items {
     font-family: "Courier New", ui-monospace, monospace;
@@ -138,9 +121,6 @@
     font-size: 20px; font-weight: 700; color: #2b2622;
   }
   .order .row .v small { font-size: 13px; font-weight: 400; color: #8a7f74; }
-  .order .memo {
-    font-size: 12px; color: #8a7f74; margin-top: 8px; line-height: 1.5;
-  }
 
   /* 限额核对行 */
   .quota { margin-top: 18px; }
@@ -150,13 +130,7 @@
   }
   .q-name { font-size: 14px; font-weight: 600; color: #2b2622; }
   .q-name .cat { font-size: 12px; font-weight: 400; color: #8a7f74; }
-  .q-mark {
-    font-size: 14px; font-weight: 700;
-    font-family: "Courier New", ui-monospace, monospace;
-  }
-  .q-mark.pass { color: #6f9c3d; }
-  .q-mark.warn { color: #ba7517; }
-  .q-mark.stop { color: #c0392b; }
+  .q-mark { font-size: 14px; font-weight: 700; color: #6f9c3d; font-family: "Courier New", ui-monospace, monospace; }
   .q-line2 {
     display: flex; align-items: center; gap: 8px; margin-top: 6px;
   }
@@ -168,29 +142,6 @@
     font-family: "Courier New", ui-monospace, monospace;
     font-size: 13px; font-weight: 700; color: #2b2622;
     width: 40px; text-align: right;
-  }
-
-  /* 核对章：盖页脚右缘，真实小票章位，不压数据 */
-  .stamp {
-    position: absolute; right: 18px; bottom: 120px;
-    width: 84px; height: 84px;
-    border: 3px solid rgba(218,55,67,.72);
-    border-radius: 50%;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    transform: rotate(-14deg);
-    color: rgba(218,55,67,.82);
-    pointer-events: none;
-    mix-blend-mode: multiply;
-    z-index: 2;
-  }
-  .stamp .big { font-size: 15px; font-weight: 800; letter-spacing: 3px; }
-  .stamp .sm {
-    font-family: "Courier New", ui-monospace, monospace;
-    font-size: 10px; letter-spacing: 2px; margin-top: 3px;
-  }
-  .stamp::before {
-    content: ""; position: absolute; inset: 5px;
-    border: 1px solid rgba(218,55,67,.5); border-radius: 50%;
   }
 
   /* 图例 */
@@ -216,33 +167,52 @@
     padding: 10px 12px;
   }
   .avoid .t {
-    font-size: 12px; font-weight: 700; color: #da3743;
+    font-size: 12px; font-weight: 700; color: #b82833;
     letter-spacing: 1px; margin-bottom: 4px;
   }
   .avoid p { font-size: 14px; line-height: 1.6; color: #4a4238; }
   .avoid p .warn { color: #c0392b; font-weight: 700; }
 
   /* ============ 票据底部 ============ */
-  .r-foot { padding: 20px 22px 0; position: relative; }
+  .r-foot { padding: 18px 22px 0; text-align: center; position: relative; }
 
   .slogan {
     font-size: 16px; font-weight: 700; letter-spacing: 1px;
-    color: #2b2622; padding: 0 96px 0 8px; line-height: 1.7;
-    text-align: left;
+    color: #2b2622; padding: 4px 40px;
+  }
+
+  .stamp {
+    position: absolute; right: 26px; bottom: 92px;
+    width: 96px; height: 96px;
+    border: 3px solid rgba(218,55,67,.75);
+    border-radius: 50%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    transform: rotate(-14deg);
+    color: rgba(218,55,67,.85);
+    pointer-events: none;
+    mix-blend-mode: multiply;
+  }
+  .stamp .big { font-size: 17px; font-weight: 800; letter-spacing: 3px; }
+  .stamp .sm {
+    font-family: "Courier New", ui-monospace, monospace;
+    font-size: 11px; letter-spacing: 2px; margin-top: 3px;
+  }
+  .stamp::before {
+    content: ""; position: absolute; inset: 5px;
+    border: 1px solid rgba(218,55,67,.55); border-radius: 50%;
   }
 
   .barcode {
-    margin: 22px auto 0; width: 78%; height: 40px;
+    margin: 20px auto 0; width: 82%; height: 44px;
     background: repeating-linear-gradient(90deg,
-      #3a332c 0 2px, transparent 2px 5px,
-      #3a332c 5px 6px, transparent 6px 8px,
-      #3a332c 8px 12px, transparent 12px 14px,
-      #3a332c 14px 15px, transparent 15px 21px,
-      #3a332c 21px 24px, transparent 24px 26px,
-      #3a332c 26px 27px, transparent 27px 33px,
-      #3a332c 33px 36px, transparent 36px 38px,
-      #3a332c 38px 39px, transparent 39px 42px);
-    opacity: .88;
+      #14100d 0 2px, transparent 2px 5px,
+      #14100d 5px 6px, transparent 6px 8px,
+      #14100d 8px 12px, transparent 12px 14px,
+      #14100d 14px 15px, transparent 15px 19px,
+      #14100d 19px 22px, transparent 22px 24px,
+      #14100d 24px 25px, transparent 25px 29px,
+      #14100d 29px 32px, transparent 32px 34px,
+      #14100d 34px 35px, transparent 35px 38px);
   }
   .serial {
     font-family: "Courier New", ui-monospace, monospace;
@@ -260,7 +230,7 @@
   }
   .fan-note {
     font-size: 12px; color: #a09588;
-    margin-top: 6px; padding-bottom: 20px;
+    margin-top: 6px; padding-bottom: 18px;
   }
 
   /* 撕边 */
@@ -285,7 +255,7 @@
     </div>
     <div class="store">
       <div class="en">HEALTH PASS</div>
-      <div class="zh">STORE NO. 3230066</div>
+      <div class="zh">健康放行单</div>
     </div>
     <h1>麦门健康通行证</h1>
     <div class="sub">MCD HEALTH PASS · NUTRITION RECEIPT</div>
@@ -307,7 +277,6 @@
         <span class="k">合计 TOTAL</span>
         <span class="v"><small>¥</small>36.5</span>
       </div>
-      <div class="memo">※ 本单为散点组合价；该店套餐 ¥33 含饮料可换无糖，如有需要可切换。</div>
     </div>
 
     <!-- 限额核对行 -->
@@ -316,30 +285,30 @@
       <div class="q-row">
         <div class="q-line1">
           <span class="q-name">钠 / 1500mg <span class="cat">（血压管理）</span></span>
-          <span class="q-mark pass">☑</span>
+          <span class="q-mark">☑</span>
         </div>
         <div class="q-line2">
-          <div class="q-track"><div class="q-fill" style="width:37%;background:#97c459;"></div></div>
+          <div class="q-track"><div class="q-fill" style="width:37%"></div></div>
           <span class="q-pct">37%</span>
         </div>
       </div>
       <div class="q-row">
         <div class="q-line1">
           <span class="q-name">脂肪 / 66g</span>
-          <span class="q-mark pass">☑</span>
+          <span class="q-mark">☑</span>
         </div>
         <div class="q-line2">
-          <div class="q-track"><div class="q-fill" style="width:20%;background:#97c459;"></div></div>
+          <div class="q-track"><div class="q-fill" style="width:20%"></div></div>
           <span class="q-pct">20%</span>
         </div>
       </div>
       <div class="q-row">
         <div class="q-line1">
           <span class="q-name">碳水 / 250g <span class="cat">（控糖）</span></span>
-          <span class="q-mark pass">☑</span>
+          <span class="q-mark">☑</span>
         </div>
         <div class="q-line2">
-          <div class="q-track"><div class="q-fill" style="width:17%;background:#97c459;"></div></div>
+          <div class="q-track"><div class="q-fill" style="width:17%"></div></div>
           <span class="q-pct">17%</span>
         </div>
       </div>
@@ -362,7 +331,7 @@
 
   <!-- 票据底部 -->
   <div class="r-foot">
-    <div class="slogan">「拿着体检报告，<br>也能吃麦门。」</div>
+    <div class="slogan">「拿着体检报告，也能吃麦门。」</div>
     <div class="stamp">
       <span class="big">已核对</span>
       <span class="sm">CHECKED · PASS</span>

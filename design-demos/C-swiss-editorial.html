@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>麦门健康通行证 · Swiss Editorial</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #e9e6df;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: #1a1a1a;
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 400px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mono { font-family: "Helvetica Neue", "Courier New", monospace; }
+  .serif { font-family: "Georgia", "Songti SC", serif; }
+
+  /* ---------- Masthead ---------- */
+  .masthead {
+    padding: 36px 28px 0;
+  }
+  .masthead-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 2px solid #1a1a1a;
+    padding-top: 10px;
+  }
+  .masthead-kicker {
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    font-weight: 500;
+    color: #1a1a1a;
+  }
+  .arch {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+  }
+  .arch path { fill: #d9a021; }
+
+  .title-block {
+    margin-top: 40px;
+  }
+  .title-main {
+    font-family: "Georgia", "Songti SC", serif;
+    font-size: 46px;
+    line-height: 1.22;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .title-en {
+    margin-top: 12px;
+    font-family: "Helvetica Neue", "Courier New", monospace;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    color: #da3743;
+    text-transform: uppercase;
+  }
+
+  /* ---------- Health tags ---------- */
+  .tags {
+    padding: 28px 28px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .tag {
+    font-size: 14px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+  .tag-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #da3743;
+    align-self: center;
+    flex-shrink: 0;
+  }
+  .tag-name { font-weight: 600; }
+  .tag-sev {
+    font-size: 12px;
+    color: #6b6b6b;
+    letter-spacing: 0.08em;
+  }
+
+  /* ---------- Section rules ---------- */
+  .rule {
+    border: none;
+    border-top: 1px solid #d8d5cd;
+    margin: 0 28px;
+  }
+
+  /* ---------- Recommendation ---------- */
+  .section-label {
+    font-size: 12px;
+    letter-spacing: 0.24em;
+    color: #6b6b6b;
+    font-weight: 500;
+  }
+  .reco {
+    padding: 30px 28px 34px;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    column-gap: 18px;
+  }
+  .reco-head {
+    grid-column: 1 / -1;
+    margin-bottom: 22px;
+  }
+  .reco-num {
+    font-family: "Georgia", "Songti SC", serif;
+    font-size: 64px;
+    line-height: 1;
+    font-weight: 700;
+    color: #da3743;
+    align-self: start;
+  }
+  .reco-body .reco-tier {
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    color: #1a1a1a;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+  .reco-items {
+    font-family: "Georgia", "Songti SC", serif;
+    font-size: 19px;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+  .reco-price {
+    margin-top: 12px;
+    font-family: "Helvetica Neue", "Courier New", monospace;
+    font-size: 14px;
+    color: #da3743;
+    font-weight: 600;
+  }
+
+  /* ---------- Quota bars ---------- */
+  .quota {
+    background: #f5f3ee;
+    padding: 32px 28px 36px;
+  }
+  .quota .section-label { display: block; margin-bottom: 26px; }
+
+  .bar-row {
+    display: grid;
+    grid-template-columns: 1fr 52px;
+    align-items: baseline;
+    margin-bottom: 20px;
+  }
+  .bar-row:last-of-type { margin-bottom: 28px; }
+  .bar-name {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .bar-note {
+    font-size: 12px;
+    color: #8a8578;
+    font-weight: 400;
+    margin-left: 6px;
+  }
+  .bar-pct {
+    text-align: right;
+    font-family: "Helvetica Neue", "Courier New", monospace;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+  }
+  .bar-track {
+    grid-column: 1 / -1;
+    height: 3px;
+    background: #e2ded4;
+    margin-top: 8px;
+    position: relative;
+  }
+  .bar-fill {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    background: #97c459;
+  }
+
+  /* ---------- Legend ---------- */
+  .legend {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    border-top: 1px solid #d8d5cd;
+    padding-top: 16px;
+  }
+  .legend-item {
+    font-size: 12px;
+    color: #1a1a1a;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .legend-chip {
+    width: 14px; height: 3px;
+    flex-shrink: 0;
+  }
+
+  /* ---------- Footnotes ---------- */
+  .footnotes {
+    padding: 30px 28px 0;
+  }
+  .footnote-label {
+    font-size: 12px;
+    letter-spacing: 0.24em;
+    color: #6b6b6b;
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+  .footnote-text {
+    font-size: 14px;
+    line-height: 1.85;
+    color: #1a1a1a;
+  }
+  .footnote-text .red { color: #da3743; font-weight: 600; }
+
+  .disclaimer {
+    padding: 20px 28px 0;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #6b6b6b;
+  }
+
+  /* ---------- Footer ---------- */
+  .footer {
+    margin-top: 34px;
+    border-top: 2px solid #1a1a1a;
+    margin-left: 28px;
+    margin-right: 28px;
+    padding: 18px 0 34px;
+  }
+  .slogan {
+    font-family: "Georgia", "Songti SC", serif;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+  .slogan .red { color: #da3743; }
+  .footer-meta {
+    font-family: "Helvetica Neue", "Courier New", monospace;
+    font-size: 12px;
+    line-height: 1.9;
+    color: #6b6b6b;
+    letter-spacing: 0.04em;
+  }
+</style>
+</head>
+<body>
+  <main class="card">
+
+    <!-- Masthead -->
+    <header class="masthead">
+      <div class="masthead-top">
+        <span class="masthead-kicker mono">个人健康专栏 · DAILY INTAKE</span>
+        <svg class="arch" role="img" viewBox="0 0 24 24" aria-label="麦当劳拱门">
+          <path fill="#d9a021" d="M17.243 3.006c2.066 0 3.742 8.714 3.742 19.478H24c0-11.588-3.042-20.968-6.766-20.968-2.127 0-4.007 2.81-5.248 7.227-1.241-4.416-3.121-7.227-5.231-7.227C3.031 1.516 0 10.888 0 22.476h3.014c0-10.763 1.658-19.47 3.724-19.47 2.066 0 3.741 8.05 3.741 17.98h2.997c0-9.93 1.684-17.98 3.75-17.98Z"/>
+        </svg>
+      </div>
+      <div class="title-block">
+        <h1 class="title-main">麦门<br>健康通行证</h1>
+        <p class="title-en">McD&nbsp;Health&nbsp;Pass</p>
+      </div>
+    </header>
+
+    <!-- Health tags -->
+    <section class="tags" aria-label="健康标签">
+      <div class="tag">
+        <span class="tag-dot"></span>
+        <span class="tag-name">血压·中度管理</span>
+        <span class="tag-sev mono">MODERATE</span>
+      </div>
+      <div class="tag">
+        <span class="tag-dot"></span>
+        <span class="tag-name">控糖·轻度注意</span>
+        <span class="tag-sev mono">MILD</span>
+      </div>
+    </section>
+
+    <hr class="rule" style="margin-top: 30px;">
+
+    <!-- Recommendation -->
+    <section class="reco" aria-label="推荐组合">
+      <div class="reco-head">
+        <span class="section-label">今日推荐组合</span>
+      </div>
+      <div class="reco-num serif">B</div>
+      <div class="reco-body">
+        <p class="reco-tier mono">组合 B · 菜单低位之选</p>
+        <p class="reco-items">麦香鱼 + 苹果片<br>+ 锡兰红茶</p>
+        <p class="reco-price">¥36.5</p>
+      </div>
+    </section>
+
+    <!-- Quota bars -->
+    <section class="quota" aria-label="今日限额">
+      <span class="section-label">今日限额 · 三色分级</span>
+
+      <div class="bar-row">
+        <span class="bar-name">钠<span class="bar-note mono">/1500mg（血压管理）</span></span>
+        <span class="bar-pct">37%</span>
+        <span class="bar-track"><span class="bar-fill" style="width:37%"></span></span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-name">脂肪<span class="bar-note mono">/66g</span></span>
+        <span class="bar-pct">20%</span>
+        <span class="bar-track"><span class="bar-fill" style="width:20%"></span></span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-name">碳水<span class="bar-note mono">/250g（控糖）</span></span>
+        <span class="bar-pct">17%</span>
+        <span class="bar-track"><span class="bar-fill" style="width:17%"></span></span>
+      </div>
+
+      <div class="legend">
+        <span class="legend-item"><span class="legend-chip" style="background:#97c459"></span>≤33% 放心</span>
+        <span class="legend-item"><span class="legend-chip" style="background:#ef9f27"></span>34–66% 注意</span>
+        <span class="legend-item"><span class="legend-chip" style="background:#e24b4a"></span>&gt;66% 避开</span>
+      </div>
+    </section>
+
+    <!-- Footnotes -->
+    <section class="footnotes" aria-label="避雷提示">
+      <p class="footnote-label">避雷提示</p>
+      <p class="footnote-text">
+        已避开：<span class="red">巨无霸（钠占64%）</span>·<span class="red">麦辣鸡腿堡（钠占81%）</span>；含糖饮料已换无糖/清茶
+      </p>
+    </section>
+
+    <p class="disclaimer">以上为营养数据参考，不构成医疗建议，饮食方案请遵医嘱</p>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="slogan">拿着体检报告，<br>也能吃<span class="red">麦门</span>。</p>
+      <p class="footer-meta">
+        NO. MP-20261009-0001 · 2026.10.09 签发<br>
+        基于麦当劳官方MCP营养数据 · 非官方粉丝作品
+      </p>
+    </footer>
+
+  </main>
+</body>
+</html>

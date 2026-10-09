@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>麦门健康通行证 · McD Health Pass</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #121110;
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    color: #f5f0e6;
+    display: flex;
+    justify-content: center;
+    padding: 24px 0;
+    -webkit-font-smoothing: antialiased;
+  }
+  .num { font-family: "Courier New", monospace; }
+
+  .card {
+    max-width: 400px;
+    width: 100%;
+    background: #1f1d1a;
+    border: 3px solid #FFC72C;
+    border-radius: 20px;
+    padding: 8px;
+  }
+  .card-inner {
+    border: 1px solid #4a4238;
+    border-radius: 14px;
+    padding: 22px 18px 16px;
+    background: #1f1d1a;
+    overflow: hidden;
+  }
+
+  /* ── 顶部：称号式标题 ── */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .top-bar .rule {
+    flex: 1;
+    height: 1px;
+    background: #4a4238;
+  }
+  .kicker {
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: #b8a88a;
+    text-align: center;
+  }
+  h1 {
+    margin-top: 10px;
+    text-align: center;
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: 12px;
+    text-indent: 12px; /* 抵消最后一字的间距，保持视觉居中 */
+    color: #FFC72C;
+    -webkit-text-stroke: 0.6px #8a6a10;
+    text-shadow: none;
+  }
+  .sub-title {
+    margin-top: 6px;
+    text-align: center;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: #8f8574;
+    font-family: "Courier New", monospace;
+  }
+
+  /* ── 徽章区：金色拱门 ── */
+  .badge-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 18px 0 14px;
+  }
+  .badge {
+    width: 132px;
+    height: 132px;
+    border: 3px solid #FFC72C;
+    border-radius: 24px;
+    background: #2a2320;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .badge::before {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border: 1px solid #6b5518;
+    border-radius: 18px;
+  }
+  .badge svg { width: 76px; height: 76px; }
+  .badge-corner {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: #FFC72C;
+  }
+  .badge-corner.tl { top: -4px; left: -4px; border-radius: 2px 0 0 0; }
+  .badge-corner.tr { top: -4px; right: -4px; border-radius: 0 2px 0 0; }
+  .badge-corner.bl { bottom: -4px; left: -4px; border-radius: 0 0 0 2px; }
+  .badge-corner.br { bottom: -4px; right: -4px; border-radius: 0 0 2px 0; }
+
+  /* ── 技能/健康标签 ── */
+  .skills {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+  .skill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 5px 10px;
+    border-radius: 4px;
+    border: 1px solid;
+    letter-spacing: 1px;
+  }
+  .skill-tag .dot {
+    width: 8px; height: 8px;
+    border-radius: 2px;
+  }
+  .skill-tag.orange { border-color: #ef9f27; color: #f5f0e6; background: #33281a; }
+  .skill-tag.orange .dot { background: #ef9f27; }
+  .skill-tag.yellow { border-color: #d8c05a; color: #f5f0e6; background: #302a18; }
+  .skill-tag.yellow .dot { background: #d8c05a; }
+  .lvl {
+    font-size: 11px;
+    font-family: "Courier New", monospace;
+    color: #b8a88a;
+  }
+
+  .skills-caption {
+    text-align: center;
+    font-size: 12px;
+    color: #8f8574;
+    letter-spacing: 2px;
+    margin: 8px 0 16px;
+  }
+
+  /* ── 区块标题 ── */
+  .sec {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 14px 0 8px;
+  }
+  .sec .gem {
+    width: 6px; height: 6px;
+    background: #FFC72C;
+    transform: rotate(45deg);
+  }
+  .sec .txt {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: #f5f0e6;
+  }
+  .sec .line { flex: 1; height: 1px; background: #4a4238; }
+  .sec .tag-no {
+    font-size: 10px;
+    color: #8f8574;
+    font-family: "Courier New", monospace;
+    letter-spacing: 1px;
+  }
+
+  /* ── 推荐组合面板 ── */
+  .combo {
+    border: 1px solid #4a4238;
+    border-radius: 10px;
+    background: #26221d;
+    padding: 12px 12px 11px;
+  }
+  .combo-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+  .combo-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: #FFC72C;
+    letter-spacing: 1px;
+  }
+  .combo-price {
+    font-size: 18px;
+    font-weight: 700;
+    color: #f5f0e6;
+  }
+  .combo-price .rmb { font-size: 12px; color: #b8a88a; }
+  .combo-desc {
+    margin-top: 3px;
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #b8a88a;
+  }
+  .combo-items {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #1f1d1a;
+    border: 1px solid #3a352c;
+    border-radius: 6px;
+    padding: 8px 6px;
+  }
+  .combo-item {
+    flex: 1;
+    text-align: center;
+    font-size: 14px;
+    color: #f5f0e6;
+    font-weight: 600;
+  }
+  .combo-plus {
+    color: #FFC72C;
+    font-size: 13px;
+    font-family: "Courier New", monospace;
+    font-weight: 700;
+  }
+
+  /* ── 能量条 ── */
+  .bars { display: flex; flex-direction: column; gap: 11px; }
+  .bar-row { }
+  .bar-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+  }
+  .bar-name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #f5f0e6;
+  }
+  .bar-name .quota {
+    font-size: 12px;
+    font-weight: 400;
+    color: #8f8574;
+    font-family: "Courier New", monospace;
+  }
+  .bar-name .purpose {
+    font-size: 11px;
+    color: #b8a88a;
+  }
+  .bar-pct {
+    font-size: 14px;
+    font-weight: 700;
+    font-family: "Courier New", monospace;
+  }
+  .bar-pct.g { color: #97c459; }
+  .bar-pct.o { color: #ef9f27; }
+  .bar-pct.r { color: #e24b4a; }
+  .bar-track {
+    height: 14px;
+    border: 1px solid #4a4238;
+    border-radius: 4px;
+    background: #171513;
+    padding: 2px;
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+  }
+  .bar-fill { border-radius: 2px; }
+  .bar-fill.g { background: #97c459; }
+  .bar-fill.o { background: #ef9f27; }
+  .bar-fill.r { background: #e24b4a; }
+  .bar-rest {
+    flex: 1;
+    display: flex;
+    align-items: stretch;
+    gap: 6px;
+    padding: 0 2px;
+  }
+  .bar-rest i {
+    flex: 1;
+    border-radius: 1px;
+    background: #2c2822;
+  }
+  .bar-ticks {
+    display: flex;
+    margin-top: 3px;
+    font-size: 10px;
+    color: #6b6355;
+    font-family: "Courier New", monospace;
+    letter-spacing: 1px;
+  }
+  .bar-ticks span:nth-child(2) { flex: 1; text-align: left; }
+  .bar-ticks span:nth-child(3) { flex: 1; text-align: center; }
+  .bar-ticks span:nth-child(4) { text-align: right; }
+
+  /* ── 图例 ── */
+  .legend {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+  }
+  .legend-item {
+    flex: 1;
+    border: 1px solid #3a352c;
+    border-radius: 6px;
+    background: #26221d;
+    text-align: center;
+    padding: 6px 2px;
+    font-size: 12px;
+    color: #b8a88a;
+    letter-spacing: 0.5px;
+  }
+  .legend-item b {
+    display: block;
+    font-size: 12px;
+    font-family: "Courier New", monospace;
+    margin-bottom: 2px;
+    letter-spacing: 0;
+  }
+  .legend-item .sw {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    margin-right: 4px;
+    vertical-align: 1px;
+  }
+
+  /* ── 避雷提示 ── */
+  .danger {
+    border: 1px solid #6e3230;
+    border-radius: 10px;
+    background: #2c211f;
+    padding: 10px 12px;
+  }
+  .danger-title {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #e24b4a;
+    margin-bottom: 5px;
+  }
+  .danger-title .cross {
+    display: inline-block;
+    width: 10px; height: 10px;
+    line-height: 10px;
+    text-align: center;
+    background: #e24b4a;
+    color: #2c211f;
+    border-radius: 2px;
+    font-size: 9px;
+    margin-right: 5px;
+    vertical-align: 1px;
+  }
+  .danger p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: #d8cfc0;
+  }
+  .danger p b { color: #f5f0e6; }
+
+  /* ── 通关评语（标语）── */
+  .verdict {
+    margin: 18px 0 4px;
+    border-top: 1px solid #4a4238;
+    border-bottom: 1px solid #4a4238;
+    padding: 14px 0;
+    text-align: center;
+  }
+  .verdict-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    color: #8f8574;
+    margin-bottom: 6px;
+  }
+  .verdict-text {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #FFC72C;
+  }
+
+  /* ── 底部编号 ── */
+  .footer {
+    margin-top: 14px;
+    border-top: 1px dashed #4a4238;
+    padding-top: 10px;
+    text-align: center;
+  }
+  .footer .serial {
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: #b8a88a;
+    font-family: "Courier New", monospace;
+  }
+  .footer .serial .no { color: #FFC72C; font-weight: 700; }
+  .footer .official {
+    margin-top: 4px;
+    font-size: 12px;
+    color: #8f8574;
+  }
+  .footer .disclaim {
+    margin-top: 8px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #6f6759;
+    padding: 0 6px;
+  }
+  .footer .arch-mini {
+    width: 18px; height: 18px;
+    margin: 10px auto 0;
+    display: block;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-inner">
+
+      <!-- 称号区 -->
+      <div class="top-bar">
+        <div class="rule"></div>
+        <div class="kicker">通关凭证</div>
+        <div class="rule"></div>
+      </div>
+      <h1>通行证</h1>
+      <div class="sub-title">McD HEALTH PASS · STAGE CLEAR</div>
+
+      <!-- 徽章：金色拱门 -->
+      <div class="badge-wrap">
+        <div class="badge">
+          <span class="badge-corner tl"></span>
+          <span class="badge-corner tr"></span>
+          <span class="badge-corner bl"></span>
+          <span class="badge-corner br"></span>
+          <svg role="img" viewBox="0 0 24 24"><path fill="#FFC72C" d="M17.243 3.006c2.066 0 3.742 8.714 3.742 19.478H24c0-11.588-3.042-20.968-6.766-20.968-2.127 0-4.007 2.81-5.248 7.227-1.241-4.416-3.121-7.227-5.231-7.227C3.031 1.516 0 10.888 0 22.476h3.014c0-10.763 1.658-19.47 3.724-19.47 2.066 0 3.741 8.05 3.741 17.98h2.997c0-9.93 1.684-17.98 3.75-17.98Z"/></svg>
+        </div>
+      </div>
+
+      <!-- 技能标签 -->
+      <div class="skills">
+        <span class="skill-tag orange"><span class="dot"></span>血压·中度管理 <span class="lvl">Lv.2</span></span>
+        <span class="skill-tag yellow"><span class="dot"></span>控糖·轻度注意 <span class="lvl">Lv.1</span></span>
+      </div>
+      <div class="skills-caption">— 携带状况已登记 · 数值不外泄 —</div>
+
+      <!-- 推荐组合 -->
+      <div class="sec"><span class="gem"></span><span class="txt">推荐组合</span><span class="line"></span><span class="tag-no">ITEM SET</span></div>
+      <div class="combo">
+        <div class="combo-head">
+          <div class="combo-name">组合 B · 菜单低位之选</div>
+          <div class="combo-price num"><span class="rmb">¥</span>36.5</div>
+        </div>
+        <div class="combo-desc">按你的两条健康标签匹配出的当日最优装备</div>
+        <div class="combo-items">
+          <span class="combo-item">麦香鱼</span>
+          <span class="combo-plus">+</span>
+          <span class="combo-item">苹果片</span>
+          <span class="combo-plus">+</span>
+          <span class="combo-item">锡兰红茶</span>
+        </div>
+      </div>
+
+      <!-- 能量条 -->
+      <div class="sec"><span class="gem"></span><span class="txt">今日限额</span><span class="line"></span><span class="tag-no">STATUS</span></div>
+      <div class="bars">
+
+        <div class="bar-row">
+          <div class="bar-meta">
+            <span class="bar-name">钠 <span class="quota">/ 1500mg</span> <span class="purpose">（血压管理）</span></span>
+            <span class="bar-pct g num">37%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill g" style="width:37%"></div><div class="bar-rest"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        </div>
+
+        <div class="bar-row">
+          <div class="bar-meta">
+            <span class="bar-name">脂肪 <span class="quota">/ 66g</span></span>
+            <span class="bar-pct g num">20%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill g" style="width:20%"></div><div class="bar-rest"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        </div>
+
+        <div class="bar-row">
+          <div class="bar-meta">
+            <span class="bar-name">碳水 <span class="quota">/ 250g</span> <span class="purpose">（控糖）</span></span>
+            <span class="bar-pct g num">17%</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill g" style="width:17%"></div><div class="bar-rest"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        </div>
+      </div>
+
+      <!-- 图例 -->
+      <div class="legend">
+        <div class="legend-item"><b><span class="sw" style="background:#97c459"></span>≤ 33%</b>放心</div>
+        <div class="legend-item"><b><span class="sw" style="background:#ef9f27"></span>34–66%</b>注意</div>
+        <div class="legend-item"><b><span class="sw" style="background:#e24b4a"></span>&gt; 66%</b>避开</div>
+      </div>
+
+      <!-- 避雷提示 -->
+      <div class="sec"><span class="gem"></span><span class="txt">避雷提示</span><span class="line"></span><span class="tag-no">AVOIDED</span></div>
+      <div class="danger">
+        <div class="danger-title"><span class="cross">✕</span>本次已被系统拦截</div>
+        <p>已避开：<b>巨无霸</b>（钠占64%）· <b>麦辣鸡腿堡</b>（钠占81%）；含糖饮料已换无糖/清茶</p>
+      </div>
+
+      <!-- 通关评语 -->
+      <div class="verdict">
+        <div class="verdict-label">通 关 评 语</div>
+        <div class="verdict-text">拿着体检报告，也能吃麦门。</div>
+      </div>
+
+      <!-- 底部 -->
+      <div class="footer">
+        <div class="serial"><span class="no">NO. MP-20261009-0001</span> · 2026.10.09 签发</div>
+        <div class="official">基于麦当劳官方MCP营养数据 · 非官方粉丝作品</div>
+        <div class="disclaim">以上为营养数据参考，不构成医疗建议，饮食方案请遵医嘱</div>
+        <svg class="arch-mini" role="img" viewBox="0 0 24 24"><path fill="#6b5518" d="M17.243 3.006c2.066 0 3.742 8.714 3.742 19.478H24c0-11.588-3.042-20.968-6.766-20.968-2.127 0-4.007 2.81-5.248 7.227-1.241-4.416-3.121-7.227-5.231-7.227C3.031 1.516 0 10.888 0 22.476h3.014c0-10.763 1.658-19.47 3.724-19.47 2.066 0 3.741 8.05 3.741 17.98h2.997c0-9.93 1.684-17.98 3.75-17.98Z"/></svg>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
