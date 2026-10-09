@@ -1,0 +1,22 @@
+{
+  "profile_version": "1.0",
+  "user_alias": "仿真测试用户",
+  "conditions": [
+    {
+      "id": "hypertension",
+      "severity": "moderate",
+      "evidence": "血压 148/94 mmHg",
+      "report_ref": "仿真报告 2026-09（数据为虚构测试数据）",
+      "effective_sodium_limit_mg": 1500
+    },
+    {
+      "id": "diabetes",
+      "severity": "mild",
+      "evidence": "空腹血糖 6.4 mmol/L（空腹血糖受损）",
+      "report_ref": "仿真报告 2026-09（数据为虚构测试数据）",
+      "effective_carb_limit_g": 250
+    }
+  ],
+  "confirmed_by_user": true,
+  "updated": "2026-10-09T20:34:00+08:00"
+}

@@ -112,6 +112,9 @@ report_indicators:
     thresholds:
       - { metric: "总胆固醇>=6.2 或 低密度脂蛋白>=4.1 或 甘油三酯>=2.3", map: hyperlipidemia, severity: moderate }
       - { metric: "总胆固醇5.2-6.1 或 低密度脂蛋白3.4-4.0", map: hyperlipidemia, severity: mild }
+    # 严重度上调规则：数值落在轻度区间，但报告主检结论/建议中明确出现
+    # "控制油脂/低脂饮食/血脂异常/高血脂"等干预性表述时，按 moderate 处理。
+    escalation_keywords: ["控制油脂", "低脂饮食", "降脂", "血脂异常", "高血脂"]
   - report_keywords: ["空腹血糖", "糖化血红蛋白", "糖尿病"]
     thresholds:
       - { metric: "空腹血糖>=7.0 或 糖化血红蛋白>=6.5", map: diabetes, severity: moderate }
@@ -128,4 +131,7 @@ display_rules:
   green_zone: "<=33%"       # 绿色：限额占比低
   yellow_zone: "34-66%"     # 黄色：注意
   red_zone: ">66%"          # 红色：本餐不建议
-  combination_note: "多状况并存时，取各状况对应营养素限额中最严格者做推荐排序"
+  combination_note: >-
+    多状况并存时，各状况只约束自己对应的营养素限额（如高血压管钠、糖尿病管碳水），
+    每个营养素如有多个来源取最严格值；推荐排序按用户档案中所有营养素综合评分。
+    严重度还可由报告主检建议的干预性表述上调（见 report_indicators 的 escalation_keywords）。
