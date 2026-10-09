@@ -4,6 +4,10 @@
 
 别人告诉你这个套餐多少卡——我们告诉你，这份套餐对**你这个身体状况的人**意味着什么。
 
+<p align="center">
+  <img src="docs/card-preview.png" alt="麦门健康通行证分享卡片" width="360">
+</p>
+
 [![GitHub Stars](https://img.shields.io/github/stars/AZmanblaze/mcd-health-pass?style=social)](https://github.com/AZmanblaze/mcd-health-pass/stargazers)
 
 ## 这是什么
@@ -87,7 +91,9 @@ mcd-health-pass/
 ├── MCP_INTEGRATION.md      # MCP 工具与调用链说明
 ├── skill/SKILL.md          # Skill 主体（提示词工作流）
 ├── rules/health_rules.yaml # 慢病限额规则库（含来源注释）
-└── assets/                 # 分享卡片模板
+├── assets/                 # 分享卡片模板（票据收据风）
+├── examples/               # 仿真体检报告 + 健康档案样例
+└── design-demos/           # 设计方向探索记录（三方向初稿）
 ```
 
 ## Roadmap
