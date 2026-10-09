@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>麦门健康通行证 · 分享卡片</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    background: #f5f3ee;
+    display: flex; justify-content: center; padding: 24px 12px;
+  }
+  .card {
+    width: 400px; border-radius: 20px; overflow: hidden;
+    background: #fff; box-shadow: 0 4px 24px rgba(0,0,0,.08);
+  }
+  .header {
+    background: #da3743; color: #fff; padding: 22px 24px 18px;
+    position: relative;
+  }
+  .header .brand { font-size: 12px; letter-spacing: 2px; opacity: .85; }
+  .header h1 { font-size: 24px; font-weight: 700; margin-top: 4px; }
+  .header .pass-no {
+    position: absolute; top: 22px; right: 24px; text-align: right;
+    font-size: 11px; opacity: .9; line-height: 1.5;
+  }
+  .tags { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
+  .tag {
+    background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.4);
+    color: #fff; font-size: 12px; padding: 4px 10px; border-radius: 999px;
+  }
+  .body { padding: 20px 24px; }
+  .section-title {
+    font-size: 13px; color: #8a8578; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after { content: ""; flex: 1; height: 1px; background: #eee9df; }
+  .combo { border: 1px solid #eee9df; border-radius: 12px; padding: 14px 16px; }
+  .combo-name { font-size: 15px; font-weight: 700; color: #2c2c2a; }
+  .combo-items { font-size: 13px; color: #5f5e5a; margin-top: 4px; line-height: 1.6; }
+  .combo-price { font-size: 13px; color: #da3743; font-weight: 700; margin-top: 6px; }
+  .bars { margin-top: 18px; }
+  .bar-row { margin-bottom: 12px; }
+  .bar-label {
+    display: flex; justify-content: space-between; font-size: 12px;
+    color: #5f5e5a; margin-bottom: 5px;
+  }
+  .bar-label b { font-weight: 700; }
+  .bar-track { height: 10px; background: #f1efe8; border-radius: 999px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 999px; }
+  .zone-hint {
+    display: flex; gap: 14px; margin-top: 4px; font-size: 11px; color: #8a8578;
+  }
+  .zone-hint span { display: flex; align-items: center; gap: 4px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .note {
+    margin-top: 16px; background: #faf6ec; border-radius: 10px;
+    padding: 10px 14px; font-size: 12px; color: #854f0b; line-height: 1.6;
+  }
+  .footer {
+    padding: 16px 24px 20px; text-align: center;
+    border-top: 1px dashed #eee9df;
+  }
+  .footer .slogan { font-size: 14px; font-weight: 700; color: #2c2c2a; }
+  .footer .slogan em { font-style: normal; color: #da3743; }
+  .footer .sub { font-size: 11px; color: #b4b2a9; margin-top: 4px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="header">
+    <div class="brand">McD HEALTH PASS</div>
+    <h1>麦门健康通行证</h1>
+    <div class="pass-no">NO. MP-20261009-0001<br>2026.10.09 签发</div>
+    <div class="tags">
+      <span class="tag">血压 · 中度管理</span>
+      <span class="tag">控糖 · 轻度注意</span>
+    </div>
+  </div>
+  <div class="body">
+    <div class="section-title">今日推荐</div>
+    <div class="combo">
+      <div class="combo-name">组合 B · 菜单低位之选</div>
+      <div class="combo-items">麦香鱼 + 苹果片 + 锡兰红茶</div>
+      <div class="combo-price">合计 ¥36.5 · 钠已是菜单里的最优解之一</div>
+    </div>
+    <div class="bars">
+      <div class="section-title" style="margin-top:18px;">本餐限额占用</div>
+      <div class="bar-row">
+        <div class="bar-label"><span>钠 / 1500mg（血压管理）</span><b style="color:#3b6d11;">37% 🟢</b></div>
+        <div class="bar-track"><div class="bar-fill" style="width:37%;background:#97c459;"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>脂肪 / 66g</span><b style="color:#3b6d11;">20% 🟢</b></div>
+        <div class="bar-track"><div class="bar-fill" style="width:20%;background:#97c459;"></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span>碳水 / 250g（控糖）</span><b style="color:#3b6d11;">17% 🟢</b></div>
+        <div class="bar-track"><div class="bar-fill" style="width:17%;background:#97c459;"></div></div>
+      </div>
+      <div class="zone-hint">
+        <span><span class="dot" style="background:#97c459;"></span>≤33% 放心</span>
+        <span><span class="dot" style="background:#ef9f27;"></span>34-66% 注意</span>
+        <span><span class="dot" style="background:#e24b4a;"></span>&gt;66% 避开</span>
+      </div>
+    </div>
+    <div class="note">已避开：巨无霸（钠占 64%）· 麦辣鸡腿堡（钠占 81%）。含糖饮料已换无糖/清茶。以上为营养数据参考，不构成医疗建议，饮食方案请遵医嘱。</div>
+  </div>
+  <div class="footer">
+    <div class="slogan">拿着体检报告，也能吃 <em>麦门</em>。</div>
+    <div class="sub">McD Health Pass · 基于麦当劳官方 MCP 营养数据 · 非官方粉丝作品</div>
+  </div>
+</div>
+</body>
+</html>
