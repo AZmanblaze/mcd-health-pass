@@ -4,7 +4,7 @@
 
 别人告诉你这个套餐多少卡——我们告诉你，这份套餐对**你这个身体状况的人**意味着什么。
 
-[![GitHub Stars](https://img.shields.io/github/stars/YOUR_USERNAME/mcd-health-pass?style=social)](https://github.com/YOUR_USERNAME/mcd-health-pass/stargazers)
+[![GitHub Stars](https://img.shields.io/github/stars/AZmanblaze/mcd-health-pass?style=social)](https://github.com/AZmanblaze/mcd-health-pass/stargazers)
 
 ## 这是什么
 
