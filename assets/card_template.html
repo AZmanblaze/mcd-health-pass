@@ -172,8 +172,8 @@
 
   /* 核对章：盖页脚右缘，真实小票章位，不压数据 */
   .stamp {
-    position: absolute; right: 18px; bottom: 120px;
-    width: 84px; height: 84px;
+    position: absolute; right: 12px; bottom: 128px;
+    width: 78px; height: 78px;
     border: 3px solid rgba(218,55,67,.72);
     border-radius: 50%;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -227,8 +227,9 @@
   .r-foot { padding: 20px 22px 0; position: relative; text-align: center; }
 
   .slogan {
-    font-size: 16px; font-weight: 700; letter-spacing: 1px;
-    color: #2b2622; padding: 0 90px; line-height: 1.7;
+    font-size: 14px; font-weight: 700; letter-spacing: 1px;
+    color: #2b2622; padding: 0; line-height: 1.7;
+    white-space: nowrap;
   }
 
   .barcode {
@@ -290,8 +291,7 @@
     <h1>麦门健康通行证</h1>
     <div class="sub">MCD HEALTH PASS · NUTRITION RECEIPT</div>
     <div class="chips">
-      <span class="chip mid"><i></i>血压·中度管理</span>
-      <span class="chip light"><i></i>控糖·轻度注意</span>
+      <span class="chip mid"><i></i>血脂·轻度管理</span>
     </div>
   </div>
 
@@ -315,17 +315,7 @@
     <div class="quota">
       <div class="q-row">
         <div class="q-line1">
-          <span class="q-name">钠 / 1500mg <span class="cat">（血压管理）</span></span>
-          <span class="q-mark pass">☑</span>
-        </div>
-        <div class="q-line2">
-          <div class="q-track"><div class="q-fill" style="width:37%;background:#97c459;"></div></div>
-          <span class="q-pct">37%</span>
-        </div>
-      </div>
-      <div class="q-row">
-        <div class="q-line1">
-          <span class="q-name">脂肪 / 66g</span>
+          <span class="q-name">脂肪 / 66g <span class="cat">（血脂管理·主指标）</span></span>
           <span class="q-mark pass">☑</span>
         </div>
         <div class="q-line2">
@@ -335,12 +325,22 @@
       </div>
       <div class="q-row">
         <div class="q-line1">
-          <span class="q-name">碳水 / 250g <span class="cat">（控糖）</span></span>
+          <span class="q-name">碳水 / 300g <span class="cat">（顺带看）</span></span>
           <span class="q-mark pass">☑</span>
         </div>
         <div class="q-line2">
-          <div class="q-track"><div class="q-fill" style="width:17%;background:#97c459;"></div></div>
-          <span class="q-pct">17%</span>
+          <div class="q-track"><div class="q-fill" style="width:14%;background:#97c459;"></div></div>
+          <span class="q-pct">14%</span>
+        </div>
+      </div>
+      <div class="q-row">
+        <div class="q-line1">
+          <span class="q-name">钠 / 2000mg <span class="cat">（顺带看）</span></span>
+          <span class="q-mark pass">☑</span>
+        </div>
+        <div class="q-line2">
+          <div class="q-track"><div class="q-fill" style="width:28%;background:#97c459;"></div></div>
+          <span class="q-pct">28%</span>
         </div>
       </div>
     </div>
@@ -355,7 +355,7 @@
     <!-- 避雷提示 -->
     <div class="avoid">
       <div class="t">避雷提示 / AVOIDED</div>
-      <p><span class="warn">⚠</span> 已避开：巨无霸（钠占64%）·麦辣鸡腿堡（钠占81%）；含糖饮料已换无糖/清茶</p>
+      <p><span class="warn">⚠</span> 已避开：双层吉士堡（脂肪占33%）·安格斯双层厚牛堡（脂肪占98%）；想吃甜的？派（脂肪12g）和麦旋风（9g）今天先免了</p>
     </div>
 
   </div>
