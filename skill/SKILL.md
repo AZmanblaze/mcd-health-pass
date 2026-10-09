@@ -65,17 +65,24 @@ description: 麦门健康通行证——拿着体检报告吃麦当劳。根据�
 
 ```
 query-nearby-stores (beType=1, searchType=2, city+keyword)
-  → 用户选门店，拿到 storeCode
+  → 展示门店列表（含营业时间，当前时段是否在营业），用户选门店，拿到 storeCode
   → query-meals (storeCode, orderType=1, beType=1) 确认所选单品在售、拿 productCode
+     ⚠️ 注意：query-meals 返回的是门店实时菜单（code + 价格），与 list-nutrition-foods
+     的品名可能不完全一致（如"苹果片"在门店菜单里可能是"苹果片一袋(60g)"），
+     必须按品名模糊匹配对齐，匹配不上的商品明确告知用户"该门店无此品"并给近似替代。
+     ⚠️ 套餐（三件套/四件套）的营养数据无法从 list-nutrition-foods 直接对齐时，
+     按组成单品营养之和估算并标注"估算值"。
+  → query-store-coupons (storeCode, orderType=1, beType=1) 查可用券（如麦旋风券、薯条券）
   → calculate-price (storeCode, orderType=1, beType=1, items)
      ⚠️ 价格单位是"分"，展示前除以 100
-     可先查 query-store-coupons 看有无可用优惠券，主动帮用户省
-  → 用户确认价格 → create-order → 返回取餐信息
+     ⚠️ 返回 takeWayList（堂食 eat-in / 外带 take-in-store），下单前让用户选
+  → 用户确认价格和取餐方式 → create-order → 返回取餐信息
 ```
 
 注意：
 - v1 仅支持到店自取（beType=1），外送/得来速/团餐请用户使用麦当劳官方渠道。
 - 算价展示格式："合计 ¥XX.XX（原价 ¥XX.XX，已用券省 ¥X.XX）"。
+- 健康组合若单品单价合计接近门店套餐价（如板烧三件套 ¥34.5），主动告知用户差价，由用户选择"健康散点组合"还是"更便宜的官方套餐（套餐饮料可换无糖）"。
 
 ### 阶段四：生成分享卡片（用户说"生成通行证"时）
 
