@@ -1,0 +1,131 @@
+# 慢病营养限额规则库 v1.0
+
+# 数据来源：
+# - 《中国居民膳食指南（2022）》中国营养学会
+# - 《中国高血压防治指南（2024年修订版）》
+# - 《中国2型糖尿病防治指南（2020年版）》
+# - 《中国成人血脂异常防治指南（2023年修订版）》
+# - 国家卫健委《成人高血压食养指南（2023年版）》《成人糖尿病食养指南（2023年版）》《成人高尿酸血症与痛风食养指南（2024年版）》
+#
+# 设计原则：本规则库只做「事实映射」——将麦当劳官方营养数据与公开膳食限额对照，
+# 不输出医疗建议。所有 limit 数值为公开指南中的通用成人建议值。
+
+version: "1.0"
+updated: "2026-10-09"
+
+# ============ 营养素日限额基准 ============
+nutrient_limits:
+  sodium:
+    unit: mg
+    general_limit: 2000        # 膳食指南2022：成人每日钠 <2000mg（约5g盐）
+  fat:
+    unit: g
+    general_limit: 66          # 膳食指南2022：脂肪供能20-30%，按2000kcal取上限约66g
+  carbohydrate:
+    unit: g
+    general_limit: 300         # 膳食指南2022：碳水供能50-65%，按2000kcal取约300g
+  energy:
+    unit: kcal
+    general_limit: 2000        # 膳食指南2022：轻身体活动成年男性约2250kcal、女性约1800kcal，取中间参考值2000kcal
+
+# ============ 健康状况档案 ============
+# severity 说明：
+#   mild    = 体检指标轻微异常 / 医生建议饮食注意
+#   moderate = 已确诊，药物控制中，需主动管理
+#   severe  = 控制不佳或医生明确要求严格限制
+conditions:
+  hypertension:
+    label: 高血压
+    primary_nutrient: sodium
+    description: 钠摄入与血压直接相关
+    limits_by_severity:
+      mild: 2000        # 食养指南2023：高血压患者每日食盐<5g（钠≈2000mg）
+      moderate: 1500    # 高血压防治指南：推荐目标降至1.5g钠（约3.8g盐）
+      severe: 1500
+    hard_preferences:
+      - 优先选择低钠选项
+      - 警惕酱料、腌肉制品（培根、火腿）类高钠单品
+
+  hyperlipidemia:
+    label: 血脂异常
+    primary_nutrient: fat
+    description: 脂肪（尤其油炸食品）摄入影响血脂
+    limits_by_severity:
+      mild: 66          # 供能<30%
+      moderate: 55      # 供能<25%
+      severe: 44        # 供能<20%
+    hard_preferences:
+      - 优先非油炸烹饪（板烧 > 油炸鸡类）
+      - 警惕油炸小食与派类
+
+  diabetes:
+    label: 糖尿病/控糖
+    primary_nutrient: carbohydrate
+    description: 碳水化合物总量与含糖饮料是血糖管理核心
+    limits_by_severity:
+      mild: 250
+      moderate: 200     # 食养指南2023：碳水供能45-60%，医学营养治疗个体化，此处取管理型参考
+      severe: 200
+    hard_preferences:
+      - 含糖饮料必须替换为无糖/零卡选项（可乐→无糖可乐、雪碧→无糖雪碧、果汁/茶饮→无糖茶或咖啡）
+      - 警惕甜品（新地、麦旋风、派、奶冻）
+    drink_swap:         # 含糖饮料识别与替换映射
+      sugary_keywords: ["可乐", "雪碧", "果汁", "柠檬红茶", "怡泉", "奶冻", "爆珠", "新地", "麦旋风", "雪冰"]
+      safe_drinks: ["无糖可口可乐", "锡兰红茶", "川宁伯爵红茶", "热美式", "冰美式", "鲜萃咖啡", "浓缩咖啡"]
+
+  weight_loss:
+    label: 减脂控能量
+    primary_nutrient: energy
+    description: 单餐能量预算控制
+    limits_by_severity:
+      mild: 700         # 单餐建议预算（2000kcal/日三餐浮动）
+      moderate: 600
+      severe: 500
+    hard_preferences:
+      - 优先高蛋白低能量密度单品
+      - 小规格优先（小薯条>大薯条）
+
+  gout:
+    label: 高尿酸/痛风（参考提示级）
+    primary_nutrient: null
+    description: >-
+      注意：麦当劳官方营养数据不含嘌呤含量，本条目无法做精确限额映射。
+      仅依据食养指南2024的定性原则做常识性提示：
+      急性期避免肉类/海鲜/浓汤，缓解期限肉类摄入。此条目输出仅供参考。
+    limits_by_severity:
+      mild: null
+      moderate: null
+      severe: null
+    hard_preferences:
+      - 优先鸡蛋白、蔬果类、乳制品（低嘌呤）
+      - 提示级：肉类单品（牛肉/鸡肉/鱼/猪柳）标注"嘌呤含量未知，痛风人群酌情"
+
+# ============ 体检报告指标映射 ============
+# 体检报告数值/结论 → 健康状况的映射规则，供 LLM 提取时使用
+report_indicators:
+  - report_keywords: ["血压", "收缩压", "舒张压", "高血压"]
+    thresholds:
+      - { metric: "收缩压>=140 或 舒张压>=90", map: hypertension, severity: moderate }
+      - { metric: "收缩压130-139 或 舒张压80-89", map: hypertension, severity: mild }
+      - { metric: "报告结论含'高血压'", map: hypertension, severity: moderate }
+  - report_keywords: ["总胆固醇", "低密度脂蛋白", "甘油三酯", "血脂异常"]
+    thresholds:
+      - { metric: "总胆固醇>=6.2 或 低密度脂蛋白>=4.1 或 甘油三酯>=2.3", map: hyperlipidemia, severity: moderate }
+      - { metric: "总胆固醇5.2-6.1 或 低密度脂蛋白3.4-4.0", map: hyperlipidemia, severity: mild }
+  - report_keywords: ["空腹血糖", "糖化血红蛋白", "糖尿病"]
+    thresholds:
+      - { metric: "空腹血糖>=7.0 或 糖化血红蛋白>=6.5", map: diabetes, severity: moderate }
+      - { metric: "空腹血糖6.1-6.9（空腹受损）", map: diabetes, severity: mild }
+  - report_keywords: ["尿酸", "痛风"]
+    thresholds:
+      - { metric: "血尿酸>=420μmol/L（男）或>=360μmol/L（女）", map: gout, severity: moderate }
+      - { metric: "报告结论含'高尿酸血症'", map: gout, severity: moderate }
+
+# ============ 展示框架 ============
+display_rules:
+  core_metric: "占每日限额百分比"
+  example: "巨无霸（含钠961mg）≈ 高血压管理日限额(1500mg)的 64%"
+  green_zone: "<=33%"       # 绿色：限额占比低
+  yellow_zone: "34-66%"     # 黄色：注意
+  red_zone: ">66%"          # 红色：本餐不建议
+  combination_note: "多状况并存时，取各状况对应营养素限额中最严格者做推荐排序"
