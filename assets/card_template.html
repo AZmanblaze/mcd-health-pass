@@ -183,10 +183,11 @@
     mix-blend-mode: multiply;
     z-index: 2;
   }
-  .stamp .big { font-size: 15px; font-weight: 800; letter-spacing: 3px; }
+  .stamp .big { font-size: 15px; font-weight: 800; letter-spacing: 3px; text-indent: 3px; }
   .stamp .sm {
     font-family: "Courier New", ui-monospace, monospace;
-    font-size: 10px; letter-spacing: 2px; margin-top: 3px;
+    font-size: 10px; letter-spacing: 1px; margin-top: 3px;
+    white-space: nowrap; text-align: center; width: 100%; text-indent: 0;
   }
   .stamp::before {
     content: ""; position: absolute; inset: 5px;
@@ -223,12 +224,11 @@
   .avoid p .warn { color: #c0392b; font-weight: 700; }
 
   /* ============ 票据底部 ============ */
-  .r-foot { padding: 20px 22px 0; position: relative; }
+  .r-foot { padding: 20px 22px 0; position: relative; text-align: center; }
 
   .slogan {
     font-size: 16px; font-weight: 700; letter-spacing: 1px;
-    color: #2b2622; padding: 0 96px 0 8px; line-height: 1.7;
-    text-align: left;
+    color: #2b2622; padding: 0 90px; line-height: 1.7;
   }
 
   .barcode {
@@ -362,7 +362,7 @@
 
   <!-- 票据底部 -->
   <div class="r-foot">
-    <div class="slogan">「拿着体检报告，<br>也能吃麦门。」</div>
+    <div class="slogan">「拿着体检报告，也能吃麦门。」</div>
     <div class="stamp">
       <span class="big">已核对</span>
       <span class="sm">CHECKED · PASS</span>
